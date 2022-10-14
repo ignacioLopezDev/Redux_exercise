@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "../features/task/taskSlice";
-import { v4 as uuid } from "uuid";
+import { addTask, editTask } from "../features/task/taskSlice";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 
 function TaskForm() {
   // *UseSelector
@@ -39,13 +39,18 @@ function TaskForm() {
   // * HandleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      addTask({
-        id: uuid(),
-        ...task,
-        // ...task es el action.payload capturado (title: , description:) + id:..
-      })
-    );
+    if (params.id) {
+        dispatch(editTask(task))
+    } else {
+      dispatch(
+        addTask({
+          id: uuid(),
+          ...task,
+          // ...task es el action.payload capturado (title: , description:) + id:..
+        })
+      );
+    }
+
     navigate("/");
   };
 
